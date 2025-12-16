@@ -1,0 +1,71 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout>
+    <h1 class="songs-title">Canciones</h1>
+
+    <div id="spaceWork"></div>
+
+
+</Layout>
+
+
+<style> 
+    .songs-title {
+        font-family: var(--letra-cursiva);
+        font-weight: 600;
+        font-size: 70px;
+    }
+
+    #spaceWork {
+        display: flex;
+        align-self: flex-start;
+    }
+
+    :global(.lista) {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+
+        /* AGREGA ESTO: */
+        list-style-type: decimal;    /* 1. Fuerza a que aparezcan números */
+        list-style-position: inside; /* 2. Mete el número ADENTRO de la caja de texto */
+        padding-left: 0;
+        gap: 15px;
+    }
+
+    :global(.elemento) {
+        margin-left: 10px;
+    }
+</style>
+
+<script>
+    import { getCanciones } from '../utils/getCanciones'
+    document.addEventListener('DOMContentLoaded', async()=> {
+        const {data, error} = await getCanciones()
+        const spaceWork = document.getElementById('spaceWork')
+
+        if (error) {
+            const texto = document.createElement('span')
+            texto.textContent = 'No se encontron canciones'
+            texto.style.color = 'black'
+            spaceWork?.appendChild(texto)
+            return
+        }
+
+        if (data) {
+            const lista = document.createElement('ol')
+            lista.classList.add('lista')
+            data.forEach(element => {
+                const li = document.createElement('li')
+                li.textContent = element.cancion
+                li.classList.add('elemento')
+
+                lista.appendChild(li)
+            });
+            spaceWork?.appendChild(lista)
+        }
+
+    })
+</script>

@@ -1,0 +1,99 @@
+
+<section>
+    <h2>¿Musica que no queres que falte?</h2>
+
+    <div>
+        <form id="canciones">
+            <input type="text" name="cancion" placeholder="escribe una canción">
+            <span id="mensaje"></span>
+            <button>Guardar</button>
+        </form>
+    </div>
+</section>
+
+<style>
+    h2 {
+        color: var(--color-secundario);
+        font-size: 25px;
+        margin-top: 10px;
+    }
+
+
+    form {
+        margin: 10px 0;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        align-items: center;
+    }
+
+    input {
+        border: none;
+        background-color: var(--color-fondo);
+        border-bottom: 2px solid gray;
+        padding: 10px 5px;
+        width: 300px;
+    }
+
+    button {
+        display: inline-block;
+        background: var(--color-primario);
+        color: white;
+        border: non;
+        padding: 10px 20px;
+        border-radius: 10px;
+        font-size: 18px;
+        margin-bottom: 10px;
+        cursor: pointer;
+        margin-top: 5px;
+    }
+
+    span { 
+        display: none;
+    }
+
+    .guardado {
+        color: green;
+        display: inline-block;
+    }
+
+    .error {
+        color: red;
+        display: inline-block;
+    }
+</style>
+
+<script>
+    import { throwConfetti } from "../utils/confetti"
+    import { crearCancion } from "../utils/crearCancion"
+
+    const form = document.getElementById('canciones') as HTMLFormElement
+    const mensaje = document.getElementById('mensaje') as HTMLElement
+
+    form?.addEventListener('submit' ,async (e)=>{
+        e.preventDefault()
+        const formData = new FormData(form)
+        const cancion = formData.get('cancion') as string
+
+        const { data, error } = await crearCancion(cancion)
+
+        if (error) {
+            mensaje.textContent = error.message
+            mensaje.classList.add('error')
+        }
+
+        if (data) {
+            mensaje.textContent = data.message
+            mensaje.classList.add('guardado')
+            throwConfetti()
+
+            setTimeout(()=> {
+                mensaje.classList.remove('guardado')
+                form.reset()
+            }, 3000)
+            
+        }
+
+
+    })
+</script>

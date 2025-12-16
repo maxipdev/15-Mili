@@ -1,0 +1,59 @@
+---
+const { id } = Astro.props
+---
+
+<div class="contenedor-modal" id={id}>
+    <div class="modal">
+        <span id="close">X</span>
+        <!-- <img src="../../foto-prueba.jpg" alt=""> -->
+    </div>
+</div>
+
+<style>
+    .contenedor-modal {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100dvh;
+        width: 100%;
+        background-color: rgba(0, 0, 0, 0.75);
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 10;
+        display: none;
+    }
+
+    .modal {
+        max-width: 85%;
+        max-height: 85%;
+        position: relative;
+
+    }
+
+    span {
+        color: red;
+        font-size: 40px;
+        position: absolute;
+        right: -20px;
+        top:  -45px;
+        cursor: pointer;
+    }
+
+    img {
+        object-fit: contain;
+        width: 100%;
+        height: 100%;
+        border-radius: 8px;
+        box-shadow: 0 0 10px var(--color-primario-claro);
+
+    }
+</style>
+
+
+<script>
+    document.getElementById("close")?.addEventListener('click', ()=> {
+        const modal = document.querySelector('.contenedor-modal') as HTMLElement;
+        if (modal){ modal.style.display = 'none';}
+    })
+</script>

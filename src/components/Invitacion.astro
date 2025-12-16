@@ -1,0 +1,98 @@
+<section class="contenedor-invitacion" id="contenedor-invitacion">
+    <div class="title">
+        <h2>Te espero!!</h2>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none" stroke="palevioletred" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" >
+            <path d="M15,35 C15,15 40,15 50,35 C60,15 85,15 85,35 C85,55 50,85 50,85 C50,85 15,55 15,35 Z" />
+        </svg>
+    </div>
+
+    <h3>Salon Cristal</h3>
+    <div class="ubicacion">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="palevioletred" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-map-pin"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 11a3 3 0 1 0 6 0a3 3 0 0 0 -6 0" /><path d="M17.657 16.657l-4.243 4.243a2 2 0 0 1 -2.827 0l-4.244 -4.243a8 8 0 1 1 11.314 0z" /></svg>
+        <h4>Crystal Eventos, Martín Fierro 126, B1875 Wilde</h4>
+    </div>
+    <span>Dresscode Elegante Sport</span>
+</section>
+
+
+<style>
+    .contenedor-invitacion {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        margin: 50px 0;
+        width: 100%;
+
+        .title {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: nowrap;
+
+            svg {
+                /* Le damos un tamaño fijo pero flexible si es necesario */
+                width: 60px; 
+                height: 60px;
+                
+                /* 2. AGREGADO: Evita que el corazón se aplaste si hay poco espacio */
+                flex-shrink: 0; 
+                
+                /* Quitamos el margin-bottom viejo para que se centre bien con el texto */
+                margin-bottom: 0; 
+            }
+        }
+    }
+
+    /* h2 {
+        font-size: 60px;
+        font-weight: 600;
+        margin-bottom: 15px;
+    } */
+
+    h2 {
+        /* 3. LA MAGIA: El tamaño se adapta */
+        /* Dice: "Mínimo 30px, Idealmente el 10% del ancho de pantalla, Máximo 60px" */
+        font-size: clamp(60px, 10vw, 60px); /*posiblemente a modificar*/
+        
+        font-weight: 600;
+        
+        /* 4. AGREGADO: Prohibido saltar de línea */
+        white-space: nowrap; 
+        
+        /* Quitamos márgenes que molesten a la alineación lateral */
+        margin: 0;
+    }
+
+    h3 {
+        font-family: 'Great Vibes', cursive;
+        font-size: 65px;
+        font-weight: 500;
+        margin-bottom: 15px;
+    }
+
+    .ubicacion {
+        display: flex;
+        align-items: flex-start;
+        gap: 5px;
+        cursor: pointer;
+
+        h4 {
+            color: var(--color-ubicacion);
+        }
+    }
+
+    span {
+        color: var(--color-secundario);
+        font-size: 25px;
+        margin-top: 10px;
+    }
+</style> 
+
+<script>
+    import { clock } from "../utils/countingSystem";
+
+    const fechaObjetivo = new Date(2025, 11, 20, 22, 0, 0).getTime();
+    clock({id: "contenedor-invitacion", fechaObjetivo, oculta: true})
+</script>

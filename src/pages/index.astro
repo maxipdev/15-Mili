@@ -1,0 +1,36 @@
+---
+import Agradecimientos from '../components/Agradecimientos.astro';
+import Amigos from '../components/Amigos.astro';
+import Canciones from '../components/Canciones.astro';
+import Counter from '../components/Counter.astro';
+import Invitacion from '../components/Invitacion.astro';
+import Regalos from '../components/Regalos.astro';
+import Slide from '../components/Slide.astro';
+import Welcome from '../components/Welcome.astro';
+import Layout from '../layouts/Layout.astro';
+import Marco from '../layouts/Marco.astro'
+
+// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
+// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+---
+
+<Layout>
+	<Marco>
+		<Welcome />
+	</Marco>
+	
+	<Slide />
+
+	<Marco>
+		<Invitacion />
+		<Counter />
+		<Amigos />
+		<Agradecimientos />
+		<Canciones />
+		<Regalos />
+	</Marco>
+</Layout>
+
+
+<style> 
+</style>

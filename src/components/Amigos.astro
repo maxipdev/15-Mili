@@ -1,0 +1,86 @@
+---
+import Modal from "./Modal.astro"
+import Slide from "./Slide.astro"
+---
+
+<section id="amigos">
+    <h2>Comparti tus fotos</h2>
+    <label class="btn">
+        Seleccionar Foto
+        <input type="file" accept="image/*" hidden id="imagen"/>
+    </label>
+    <span id="nombre-foto"></span>
+
+    <button id="btn-friends">Subir Foto</button>
+
+    <Slide />
+
+    <a class="btn" href="/album">Ver Album</a>
+
+    <h3 class="rankin-title">Ranking</h3>
+    <div class="rankin">
+    </div>
+</section>
+
+<Modal id={'form-friends'} />
+
+<style>
+    #amigos {
+        display: none;
+    }
+
+    .btn {
+        display: inline-block;
+        background: var(--color-primario);
+        color: white;
+        padding: 10px 20px;
+        border-radius: 10px;
+        font-size: 18px;
+        margin-bottom: 10px;
+        cursor: pointer;
+        margin-top: 5px;
+    }
+
+    a {
+        text-decoration: none;
+    }
+
+    .rankin-title {
+        font-family: 'Sedgwick Ave', cursive;
+        font-size: 50px;
+        margin-top: 18px;
+    }
+</style>
+
+<script>
+    import { reloj } from "../utils/sistema";
+
+    const fechaObjetivo = new Date(2025, 11, 20, 21, 0, 0).getTime();
+    // clock({id: "amigos", fechaObjetivo})
+
+    reloj({
+    fechaObjetivo,
+    funcion: () => {
+        (document.getElementById('amigos') as HTMLElement).style.display = 'block'
+    }
+  })
+
+  const texto = document.getElementById('nombre-foto') as HTMLElement
+  const input = document.getElementById('imagen') as HTMLInputElement
+
+  input?.addEventListener('change', (event)=> {
+    event.preventDefault()
+
+    const target = event.target as HTMLInputElement
+
+    console.log(target)
+
+    // if (target) {
+    //     texto?.textContent = archivo.name
+    // } else {
+    //     texto?.textContent = ''
+    // }
+  })
+
+
+</script>

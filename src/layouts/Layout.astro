@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="es" >
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&family=Rock+Salt&family=Sedgwick+Ave&display=swap" rel="stylesheet">
+		<meta name="generator" content={Astro.generator} />
+		<title>15 De Mili</title>
+	</head>
+	<body>
+		<slot />
+	</body>
+</html>
+
+<!-- data-theme="dark" -->
+
+<style is:global>
+	:root {
+		--color-fondo: #f4f5dd;
+		--color-primario: goldenrod;
+		--color-secundario: #d35bb3;
+		--color-contador : #d63384;
+		--letra-cursiva: 'Great Vibes', cursive;
+		--color-relleno: #0016d5;
+		--color-ubicacion : var(--color-primario);
+	}
+
+	[data-theme="dark"] {
+		--color-fondo: black;
+		--color-primario : palevioletred;
+		--color-secundario: #e67ad6;
+		--color-relleno: white;
+		--color-ubicacion : white;
+	}
+
+	*{
+		margin: 0;
+		padding: 0;
+		box-sizing: border-box;
+	}
+
+	html,
+	body {
+		margin: 0;
+		/* width: 100%; */
+		height: 100%;
+		background-color: var(--color-fondo);
+		text-align: center;
+		color: var(--color-primario);
+		/* padding: 0 5px; */
+	}
+</style>
+
+<!-- <script>
+    import { clock } from "./countingSystem";
+
+    const fechaObjetivo = new Date(2025, 11, 20, 22, 0, 0).getTime();
+    clock({id: "contenedor-invitacion", fechaObjetivo, oculta: true})
+</script> -->
