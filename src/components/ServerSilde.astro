@@ -1,0 +1,161 @@
+---
+import { getRandom } from '../utils/getRandom';
+import { actions } from 'astro:actions';
+
+export const prerender = false
+
+const result = await Astro.callAction(actions.getImages);
+const listaImagenes = result.data?.data || [];
+const RUTA_BASE_DB = `https://djnfergavjbxmprprdfr.supabase.co/storage/v1/object/public/fotos/public/`
+
+// 1. Declaramos las variables vacías
+let imagenElegida1, imagenElegida2, imagenElegida3;
+// 2. Creamos una bandera para saber qué tipo de foto estamos usando
+const usarFotosDB = listaImagenes.length > 0;
+
+if (usarFotosDB) {
+    // CASO A: SI HAY FOTOS EN LA DB
+    // Solo entramos aquí si la lista NO está vacía, así que el random no fallará.
+    imagenElegida1 = listaImagenes[getRandom(0, listaImagenes.length - 1)];
+    imagenElegida2 = listaImagenes[getRandom(0, listaImagenes.length - 1)];
+    imagenElegida3 = listaImagenes[getRandom(0, listaImagenes.length - 1)];
+}
+
+console.log('Modo DB activado:', usarFotosDB);
+console.log(imagenElegida1, imagenElegida2, imagenElegida3);
+
+---
+
+{usarFotosDB ? (
+    <section>
+        <div class="visor">
+            <div class="slider-track">      
+                
+                {/* Slide 1 */}
+                <div class="slide">
+                    <div class="contenedor-img">
+                        <img 
+                            class="img"
+                            src={`${RUTA_BASE_DB}${imagenElegida1.name}`} 
+                            alt="foto 1"
+                        />
+                    </div>
+                </div>
+
+                {/* Slide 2 */}
+                <div class="slide">
+                    <div class="contenedor-img">
+                        <img 
+                            class="img"
+                            src={`${RUTA_BASE_DB}${imagenElegida2.name}`} 
+                            alt="foto 2"
+                        />
+                    </div>
+                </div>
+
+                {/* Slide 3 */}
+                <div class="slide">
+                    <div class="contenedor-img">
+                        <img 
+                            class="img"
+                            src={`${RUTA_BASE_DB}${imagenElegida3.name}`} 
+                            alt="foto 3"
+                        />
+                    </div>
+                </div>
+            
+            </div>
+        </div>
+    </section> 
+) : (
+    /* ESTO ES LO QUE SE VE SI NO HAY FOTOS */
+    <div class="mensaje-error">
+        <h4>Todavía no hay fotos disponibles</h4>
+        <br />
+        <p>¿Qué estás esperando?, compartí tu foto ahora</p>
+    </div>
+)}
+
+<style>
+    section {
+        display: flex;
+        justify-content: center;
+        margin: 10px 0;
+        margin-bottom: 30px;
+    }
+
+    .mensaje-error {
+        margin: 10px 0 20px 0;
+    }
+
+    h4 {
+        font-size: 22px;
+    }
+
+    p {
+        margin-bottom: 14px;
+        font-size: 18px;
+    }
+
+    /* 1. EL VISOR: Define el tamaño de la "ventana" */
+    .visor {
+        width: 350px;       /* Ancho de UNA sola foto */
+        height: 400px;      /* Alto de las fotos */
+        display: flex;
+        align-items: center;  /* Centrado en la página */
+        overflow: hidden;   /* Oculta las fotos que están a los lados */
+        /* border: solid 1.5px palevioletred; */
+        border-radius: 10px; /* Opcional: bordes redondeados */
+        box-shadow: 0 4px 10px palevioletred;
+    }
+
+    /* 2. LA PISTA: Contiene todas las fotos en fila */
+    .slider-track {
+        display: flex;
+        width: 300%; /* 3 fotos = 300% del ancho del visor */
+        height: 100%;
+        
+        /* La animación mágica */
+        animation: slide-animation 10s infinite ease-in-out;
+    }
+
+    /* 3. CADA SLIDE INDIVIDUAL */
+    .slide {
+        width: 100%; /* Ocupa el 100% del espacio disponible en la pista para una foto */
+        height: 100%;
+    }
+
+   .contenedor-img {
+        width: 350px;
+        height: 400px;
+
+        .img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+    }
+
+    /* 4. LA ANIMACIÓN (Matemática para 3 fotos) 
+       - 0% a 20%: Muestra foto 1
+       - 33% a 53%: Muestra foto 2
+       - 66% a 86%: Muestra foto 3
+       - 100%: Vuelve al inicio
+    */
+    @keyframes slide-animation {
+        /* FOTO 1 (Quieta) */
+        0% { transform: translateX(0); }
+        30% { transform: translateX(0); }
+        
+        /* Transición a FOTO 2 */
+        35% { transform: translateX(-33.333%); } /* Mueve 1 tercio */
+        65% { transform: translateX(-33.333%); } /* Se queda quieta */
+
+        /* Transición a FOTO 3 */
+        70% { transform: translateX(-66.666%); } /* Mueve 2 tercios */
+        95% { transform: translateX(-66.666%); } /* Se queda quieta */
+
+        /* Vuelta al principio (Sin pausa para que sea un bucle o rebobinado rápido) */
+        100% { transform: translateX(0); }
+    }
+</style>

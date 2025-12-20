@@ -1,5 +1,5 @@
 ---
-import Slide from "./Slide.astro"
+import ServerSilde from "./serverSilde.astro"
 ---
 
 <section id="amigos">
@@ -22,7 +22,7 @@ import Slide from "./Slide.astro"
     </form>
     <span id="state"></span>
 
-    <Slide />
+    <ServerSilde />
 
     <a class="btn" href="/album">Ver Álbum</a>
 
@@ -36,6 +36,10 @@ import Slide from "./Slide.astro"
 
     #message { 
         color: white;
+    }
+
+    h2 {
+        font-size: 38px;
     }
 
     form {
@@ -83,7 +87,7 @@ import Slide from "./Slide.astro"
     import { reloj } from "../utils/sistema";
     import { actions } from "astro:actions";
 
-    const fechaObjetivo = new Date(2025, 11, 20, 21, 0, 0).getTime();
+    const fechaObjetivo = new Date(2024, 11, 20, 21, 0, 0).getTime();
 
     reloj({
     fechaObjetivo,
