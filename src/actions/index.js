@@ -3,6 +3,7 @@ import { z } from "astro:schema";
 import { uploadImage } from "../services/uploadImage";
 import { saveImage } from "../services/saveImage";
 import { getImages } from "../services/getImages";
+import { deleteImage } from "../services/delete";
 
 export const server = {
   uploadImage: defineAction({
@@ -49,6 +50,26 @@ export const server = {
         return {
           success: true,
           data: data,
+        };
+      } catch (error) {
+        throw new ActionError({
+          code: "BAD_REQUEST",
+          message: error,
+        });
+      }
+    },
+  }),
+
+  deleteImage: defineAction({
+    async handler({ id }) {
+      try {
+        await deleteImage({ id });
+
+        return {
+          success: true,
+          data: {
+            message: "foto Borrada correctamente",
+          },
         };
       } catch (error) {
         throw new ActionError({

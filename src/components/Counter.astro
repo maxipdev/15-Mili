@@ -39,6 +39,7 @@
     gap: 20px;
     padding: 20px;
   }
+
   .bloque-tiempo {
     display: flex;
     flex-direction: column;
@@ -64,7 +65,8 @@
   #mensaje-final {
     display: none;
     text-align: center;
-    font-size: 2rem;
+    /* font-size: 2rem; */
+    font-size: 2.2rem;
     color: var(--color-contador);
     animation: palpitar 1s infinite;
   }
@@ -103,6 +105,13 @@
     if(elHoras) elHoras.innerText = horas < 10 ? "0" + horas : horas;
     if(elMinutos) elMinutos.innerText = minutos < 10 ? "0" + minutos : minutos;
     if(elSegundos) elSegundos.innerText = segundos < 10 ? "0" + segundos : segundos;
+
+    if (distancia < 0) {
+      elDias.innerText = '0'
+      elHoras.innerText = '00'
+      elMinutos.innerText = '00'
+      elSegundos.innerText = '00'
+    }
 
     if (distancia < 0) {
       clearInterval(intervalo);

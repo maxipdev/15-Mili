@@ -1,19 +1,12 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import Modal from "../components/Modal.astro"
-import { Image } from 'astro:assets';
-import foto1 from '../assets/foto-1.jpg';
-import foto2 from '../assets/foto-2.jpg';
-import foto3 from '../assets/foto-3.jpg';
 import { actions } from "astro:actions";
 
 export const prerender = false
 
 const result = await Astro.callAction(actions.getImages); // ✅ Correcto
 const listaImagenes = result.data?.data || []
-
-console.log('sdsadasdsadasdasdasdasdada')
-console.log(listaImagenes)
 
 ---
 
@@ -44,7 +37,7 @@ console.log(listaImagenes)
     {listaImagenes.length > 0 ? 	
     <section class="galeria">
         {listaImagenes.map((element) => (
-                <div class="elemento" key={element.name}>            
+                <div class="elemento">            
                     <div class="contenedor-img">
                         <img 
                             src={`https://djnfergavjbxmprprdfr.supabase.co/storage/v1/object/public/fotos/public/${element.name}`} 

@@ -3,7 +3,7 @@ import Slide from "./Slide.astro"
 ---
 
 <section id="amigos">
-    <h2>Comparti tus fotos</h2>
+    <h2>Compartí tus fotos</h2>
     <form id="imagenes-form">
         <label class="button" for="input-form">Seleccionar foto</label>
 
@@ -24,10 +24,8 @@ import Slide from "./Slide.astro"
 
     <Slide />
 
-    <a class="btn" href="/album">Ver Album</a>
+    <a class="btn" href="/album">Ver Álbum</a>
 
-    <!-- <h3 class="rankin-title">Ranking</h3> -->
-    <!-- <div class="rankin"> -->
     </div>
 </section>
 
@@ -85,14 +83,14 @@ import Slide from "./Slide.astro"
     import { reloj } from "../utils/sistema";
     import { actions } from "astro:actions";
 
-    const fechaObjetivo = new Date(2024, 11, 20, 21, 0, 0).getTime();
+    const fechaObjetivo = new Date(2025, 11, 20, 21, 0, 0).getTime();
 
     reloj({
     fechaObjetivo,
-    funcion: () => {
-        (document.getElementById('amigos') as HTMLElement).style.display = 'block'
-    }
-  })
+        funcion: () => {
+            (document.getElementById('amigos') as HTMLElement).style.display = 'block'
+        }
+    })
 
   const message = document.getElementById('message') as HTMLElement
   const upload = document.getElementById('upload') as HTMLElement
@@ -108,7 +106,7 @@ import Slide from "./Slide.astro"
     if (!target.files || target.files.length === 0) return
 
     message.textContent = target.files[0].name
-    label.textContent = 'Elejir otra foto'
+    label.textContent = 'Elegir otra foto'
     upload.style.display = 'inline-block'
 
   })

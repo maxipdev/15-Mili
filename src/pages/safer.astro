@@ -1,0 +1,85 @@
+---
+import { actions } from "astro:actions";
+import Layout from "../layouts/Layout.astro";
+
+export const prerender = false
+
+const result = await Astro.callAction(actions.getImages); // ✅ Correcto
+const listaImagenes = result.data?.data || []
+---
+
+<Layout>
+    <h1>Administrador</h1>
+
+    <div>
+        {listaImagenes.map(elemento => (
+            <div class="elemento">            
+                <div class="contenedor-img">
+                    <img 
+                        src={`https://djnfergavjbxmprprdfr.supabase.co/storage/v1/object/public/fotos/public/${elemento.name}`} 
+                        alt="imagen de la fiesta" 
+                        loading="lazy" 
+                        decoding="async" 
+                        class="img"
+                    />
+                </div>
+
+                <button class="delete" data-id={elemento.id} >Eliminar foto</button>
+            </div>
+        ))}
+    </div>
+</Layout>
+
+
+<style>
+    h1 {
+        margin-bottom: 15px;
+    }
+
+    .elemento {
+        display: flex;
+        gap: 15px;
+        align-items: center;
+        margin: 5px 0;
+    }
+
+    button {
+        background-color: red;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 10px;
+    }
+
+    .contenedor-img {
+        width: 100px;
+        height: 100px;
+    }
+
+    img {
+        object-fit: contain;
+        width: 100%;
+        height: 100%;
+    }
+</style>
+
+<script>
+import { actions } from "astro:actions"
+
+    const ListaDelete = document.querySelectorAll('.delete')
+    ListaDelete.forEach(boton => {
+        boton.addEventListener('click', async()=> {
+            const id = boton.dataset.id
+
+            const {data, error} = await actions.deleteImage({id})
+
+            if (error) {
+                alert(error.message)
+            }
+
+            if (data) {
+                alert(data.data.message)
+            }
+        })
+    })
+</script>
