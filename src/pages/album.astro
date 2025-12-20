@@ -5,11 +5,21 @@ import { Image } from 'astro:assets';
 import foto1 from '../assets/foto-1.jpg';
 import foto2 from '../assets/foto-2.jpg';
 import foto3 from '../assets/foto-3.jpg';
+import { actions } from "astro:actions";
+
+export const prerender = false
+
+const result = await Astro.callAction(actions.getImages); // ✅ Correcto
+const listaImagenes = result.data?.data || []
+
+console.log('sdsadasdsadasdasdasdasdada')
+console.log(listaImagenes)
+
 ---
 
 <Layout>
     <h1>Fotos</h1>
-	<section class="galeria">
+	<!-- <section class="galeria">
         <div class="elemento">            <div class="contenedor-img">
                 <Image class={'img'} src={foto1} alt="foto de mili posando" loading="lazy" decoding="async"/>
             </div></div>
@@ -25,7 +35,36 @@ import foto3 from '../assets/foto-3.jpg';
         <div class="elemento">            <div class="contenedor-img">
                 <Image class={'img'} src={foto3} alt="foto de mili posando" />
             </div></div>
+    </section> -->
+
+    <a href="/" class="turn-back">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-arrow-narrow-left"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 12l14 0" /><path d="M5 12l4 4" /><path d="M5 12l4 -4" /></svg>
+        <span>Volver</span>
+    </a>
+    {listaImagenes.length > 0 ? 	
+    <section class="galeria">
+        {listaImagenes.map((element) => (
+                <div class="elemento" key={element.name}>            
+                    <div class="contenedor-img">
+                        <img 
+                            src={`https://djnfergavjbxmprprdfr.supabase.co/storage/v1/object/public/fotos/public/${element.name}`} 
+                            alt="imagen de la fiesta" 
+                            loading="lazy" 
+                            decoding="async" 
+                            class="img"
+                        />
+                    </div>
+                </div>
+            ))}
     </section>
+    : (
+        <h4>Todavía no hay fotos disponibles</h4>
+        <br />
+        <p>Qué estás esperando, compartí tu foto ahora</p>
+        <a href="/#amigos">Subir Foto</a>
+    )}
+
+
     <Modal id={'galery-photo'} />
 </Layout>
 
@@ -35,6 +74,10 @@ import foto3 from '../assets/foto-3.jpg';
         font-size: 80px;
         margin: 20px 0 8px 0;
     }
+
+    a {
+        text-decoration: none;
+    }
     .galeria {
         display: grid;
         grid-template-columns: 1fr 1fr;
@@ -42,7 +85,21 @@ import foto3 from '../assets/foto-3.jpg';
         gap: 8px;
     }
 
-       .contenedor-img {
+    .turn-back {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        margin-bottom: 12px;
+        cursor: pointer;
+        color: var(--color-primario);
+        margin-left: 5px;
+
+        span {
+            font-size: 18px;
+        }
+    }
+
+    .contenedor-img {
         width: 200px;
         height: 300px;
 
@@ -52,14 +109,26 @@ import foto3 from '../assets/foto-3.jpg';
             object-fit: cover;
         }
     }
+
+    p {
+        margin-bottom: 14px;
+    }
 </style>
 
 <script>
     const elementos = document.querySelectorAll('.elemento')
     const modal = document.querySelector('#galery-photo') as HTMLElement
+    const imagenModal = document.getElementById('imagen-modal') as HTMLImageElement
     elementos.forEach((elemento)=> {
         elemento.addEventListener('click', ()=> {
-            modal.style.display = 'flex'
+
+            const imagenCliqueada = elemento.querySelector('img') as HTMLImageElement
+
+            if(imagenCliqueada && imagenModal) {
+                imagenModal.src = imagenCliqueada.src
+
+                modal.style.display = 'flex'
+            }
         })
     })
 </script>

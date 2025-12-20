@@ -1,32 +1,60 @@
 ---
-import Modal from "./Modal.astro"
 import Slide from "./Slide.astro"
 ---
 
 <section id="amigos">
     <h2>Comparti tus fotos</h2>
-    <label class="btn">
-        Seleccionar Foto
-        <input type="file" accept="image/*" hidden id="imagen"/>
-    </label>
-    <span id="nombre-foto"></span>
+    <form id="imagenes-form">
+        <label class="button" for="input-form">Seleccionar foto</label>
 
-    <button id="btn-friends">Subir Foto</button>
+        <input
+            type="file"
+            id="input-form"
+            name="image"
+            accept="image/*"
+            hidden
+            required
+        />
+
+        <span id="message"></span>
+
+        <button type="submit" id="upload" class="button">Subir Foto</button>
+    </form>
+    <span id="state"></span>
 
     <Slide />
 
     <a class="btn" href="/album">Ver Album</a>
 
-    <h3 class="rankin-title">Ranking</h3>
-    <div class="rankin">
+    <!-- <h3 class="rankin-title">Ranking</h3> -->
+    <!-- <div class="rankin"> -->
     </div>
 </section>
 
-<Modal id={'form-friends'} />
-
 <style>
-    #amigos {
+    #upload, #amigos, #state {
         display: none;
+    }
+
+    #message { 
+        color: white;
+    }
+
+    form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .button {
+        background-color: var(--color-primario);
+        color: white;
+        padding: 10px 20px;
+        cursor: pointer;
+        border: none;
+        border-radius: 10px;
+        margin: 10px 0;
     }
 
     .btn {
@@ -53,10 +81,11 @@ import Slide from "./Slide.astro"
 </style>
 
 <script>
+    import { throwConfetti } from "../utils/confetti";
     import { reloj } from "../utils/sistema";
+    import { actions } from "astro:actions";
 
-    const fechaObjetivo = new Date(2025, 11, 20, 21, 0, 0).getTime();
-    // clock({id: "amigos", fechaObjetivo})
+    const fechaObjetivo = new Date(2024, 11, 20, 21, 0, 0).getTime();
 
     reloj({
     fechaObjetivo,
@@ -65,21 +94,68 @@ import Slide from "./Slide.astro"
     }
   })
 
-  const texto = document.getElementById('nombre-foto') as HTMLElement
-  const input = document.getElementById('imagen') as HTMLInputElement
+  const message = document.getElementById('message') as HTMLElement
+  const upload = document.getElementById('upload') as HTMLElement
+  const formImg = document.getElementById('imagenes-form') as HTMLFormElement
+  const input = document.getElementById('input-form') as HTMLElement
+  const label = formImg.children[0] as HTMLElement
+  const state = document.getElementById('state') as HTMLElement
 
   input?.addEventListener('change', (event)=> {
     event.preventDefault()
-
     const target = event.target as HTMLInputElement
 
-    console.log(target)
+    if (!target.files || target.files.length === 0) return
 
-    // if (target) {
-    //     texto?.textContent = archivo.name
-    // } else {
-    //     texto?.textContent = ''
-    // }
+    message.textContent = target.files[0].name
+    label.textContent = 'Elejir otra foto'
+    upload.style.display = 'inline-block'
+
+  })
+
+  upload.addEventListener('click', async(e)=> {
+    e.preventDefault()
+    const formData = new FormData(formImg)
+    const imageFile = formData.get('image')
+
+    if (!imageFile || !(imageFile instanceof File)) {
+        alert("Por favor, selecciona una imagen válida.");
+        return;
+    }
+
+    // activo el modo de loading
+    upload.disabled = true;
+    upload.textContent = "Subiendo..."; // Feedback visual
+    upload.style.opacity = "0.7";
+
+    //falta verificar que sea valdio desde aca
+    const {data, error} = await actions.uploadImage(formData)
+
+    // esto siempre pasa al principio
+    state.style.display = 'inline-block'
+    state.textContent = ''
+
+    if (error) {
+        state.textContent = error.message
+        state.style.color = 'red'
+    }
+    if (data) { 
+        throwConfetti()
+        state.textContent = data.message
+        state.style.color = 'green'
+    }
+
+    // activo nuevamente los botones y los dejo como estaban antes:
+    upload.disabled = false;
+    upload.textContent = "Subir Foto";
+    upload.style.opacity = "1";
+
+    setTimeout(()=> {
+        state.style.display = 'none'
+        label.textContent = 'Subir foto'
+        message.textContent = ''
+        upload.style.display = 'none'
+    }, 3000)
   })
 
 

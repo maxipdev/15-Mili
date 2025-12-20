@@ -39,7 +39,7 @@
         display: inline-block;
         background: var(--color-primario);
         color: white;
-        border: non;
+        border: none;
         padding: 10px 20px;
         border-radius: 10px;
         font-size: 18px;
@@ -69,11 +69,17 @@
 
     const form = document.getElementById('canciones') as HTMLFormElement
     const mensaje = document.getElementById('mensaje') as HTMLElement
+    const btn = form.children[2]
 
     form?.addEventListener('submit' ,async (e)=>{
         e.preventDefault()
         const formData = new FormData(form)
         const cancion = formData.get('cancion') as string
+
+        //activo el modo de loading:
+        btn.disabled = true
+        btn.textContent = 'Cargando...'
+        btn.style.opacity = '0.7'
 
         const { data, error } = await crearCancion(cancion)
 
@@ -94,6 +100,9 @@
             
         }
 
-
+        //vuelvo a la normalidad
+        btn.disabled = false
+        btn.textContent = 'Guardar'
+        btn.style.opacity = '1'
     })
 </script>

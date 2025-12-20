@@ -9,7 +9,8 @@
     "astro": "astro"
   },
   "dependencies": {
-    "@supabase/supabase-js": "^2.87.3",
+    "@astrojs/vercel": "^9.0.2",
+    "@supabase/supabase-js": "^2.88.0",
     "astro": "^5.16.6",
     "canvas-confetti": "^1.9.4"
   }
